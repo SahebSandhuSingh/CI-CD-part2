@@ -3,10 +3,10 @@ name: Model CI
 on:
   push:
     paths:
-      - "models/**"
+      - "CI-CD-part2/models/**"
   pull_request:
     paths:
-      - "models/**"
+      - "CI-CD-part2/models/**"
 
 jobs:
   test-and-build:
@@ -30,11 +30,11 @@ jobs:
 
       - name: Install dependencies and run tests
         run: |
-          cd models/${{ matrix.model }}
+          cd CI-CD-part2/models/${{ matrix.model }}
           pip install -r requirements.txt
           pytest
 
       - name: Build Docker image
         run: |
-          cd models/${{ matrix.model }}
+          cd CI-CD-part2/models/${{ matrix.model }}
           docker build -t ${{ matrix.model }}:${{ github.sha }} .

@@ -1,20 +1,40 @@
-name: CI - ML Tests
+name: Model CI
 
 on:
   push:
-    branches: [ "main" ]
+    paths:
+      - "models/**"
   pull_request:
+    paths:
+      - "models/**"
 
 jobs:
-  test:
+  test-and-build:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        model:
+          - fraud_model
+          - sentiment_model
+          - spam_model
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build Docker image
-        run: docker build -t ml-ci .
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
 
-      - name: Run tests inside Docker
-        run: docker run --rm ml-ci
+      - name: Install dependencies and run tests
+        run: |
+          cd models/${{ matrix.model }}
+          pip install -r requirements.txt
+          pytest
+
+      - name: Build Docker image
+        run: |
+          cd models/${{ matrix.model }}
+          docker build -t ${{ matrix.model }}:${{ github.sha }} .

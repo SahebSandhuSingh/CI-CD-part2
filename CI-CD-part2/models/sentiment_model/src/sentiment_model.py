@@ -1,4 +1,4 @@
-from base import BaseModel
+from src.base import BaseModel
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.linear_model import LogisticRegression
 

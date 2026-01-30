@@ -1,4 +1,4 @@
-from fraud_model import FraudModel
+from src.fraud_model import FraudModel
 
 def test_fraud_model_predict_length():
     model = FraudModel().load()

@@ -1,4 +1,4 @@
-from spam_model import SpamModel
+from src.spam_model import SpamModel
 
 def test_spam_model_predict_length():
     model = SpamModel().load()

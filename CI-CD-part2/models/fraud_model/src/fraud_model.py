@@ -1,4 +1,4 @@
-from base import BaseModel
+from src.base import BaseModel
 from sklearn.ensemble import RandomForestClassifier
 
 class FraudModel(BaseModel):

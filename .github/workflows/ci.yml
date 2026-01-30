@@ -1,0 +1,40 @@
+name: Model CI
+
+on:
+  push:
+    paths:
+      - "CI-CD-part2/models/**"
+  pull_request:
+    paths:
+      - "CI-CD-part2/models/**"
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        model:
+          - fraud_model
+          - sentiment_model
+          - spam_model
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies and run tests
+        run: |
+          cd CI-CD-part2/models/${{ matrix.model }}
+          pip install -r requirements.txt
+          pytest
+
+      - name: Build Docker image
+        run: |
+          cd CI-CD-part2/models/${{ matrix.model }}
+          docker build -t ${{ matrix.model }}:${{ github.sha }} .
